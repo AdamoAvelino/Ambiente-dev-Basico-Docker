@@ -1,20 +1,22 @@
-version: "2.0"
+version: "3.0"
 services:
-  app-apache:
+  teste-apache:
     build: .
     ports:
-      - "8080:8080"
+      - "8082:80"
     volumes:
       - ./code:/var/www/html
+      - ./.docker/apache:/etc/apache2/sites-available
+      - ./.docker/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - ./.docker/php/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
     depends_on:
-      - app-mysql
+      - teste-mysql
 
-  app-mysql:
+  teste-mysql:
     image: mysql:5.7.22
     command: --innodb-use-native-aio=0
-    restart: always
     ports:
-      - "3306"
+      - "33060:3306"
     volumes:
       - "./.docker/dbdata:/var/lib/mysql"
     environment:
