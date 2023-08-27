@@ -30,6 +30,13 @@ RUN echo "zend_extension=xdebug" >> docker/php/conf.d/xdebug.ini && \
     echo "xdebug.client_host=host.docker.internal" >> docker/php/conf.d/xdebug.ini && \
     echo "xdebug.start_with_request=yes" >> docker/php/conf.d/xdebug.ini
 
+RUN cd ~ && \
+    curl -sS https://getcomposer.org/installer -o composer-setup.php && \
+    php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+RUN pecl install ds && \
+    docker-php-ext-enable ds
+
 RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www
 

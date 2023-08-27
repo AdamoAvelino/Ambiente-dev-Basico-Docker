@@ -3,14 +3,18 @@ services:
   teste-apache:
     build: .
     ports:
-      - "8082:80"
+      - "8080:80"
     volumes:
-      - ./code:/var/www/html
+      - ../code:/var/www/html
       - ./.docker/apache:/etc/apache2/sites-available
       - ./.docker/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
       - ./.docker/php/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
     depends_on:
       - teste-mysql
+    extra_hosts:
+      - "host.docker.internal: 172.20.52.117"
+    environment:
+      - XDEBUG_MODE=develop,debug
 
   teste-mysql:
     image: mysql:5.7.22
